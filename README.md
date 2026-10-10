@@ -58,8 +58,8 @@ Make sure you have the following installed:
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
-cd todo-backend
+git clone https://github.com/varshithrajbasa/Todo-App-NodeJS.git
+cd Todo-App-NodeJS
 ```
 
 ### 2. Install dependencies
@@ -170,6 +170,3 @@ This project was created to practise backend development fundamentals, including
 - User authentication and authorization
 - Automated API tests
 
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.

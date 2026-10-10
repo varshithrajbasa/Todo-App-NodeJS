@@ -82,12 +82,7 @@ const updateTodoById = async (req, res) => {
             });
         }
         const { title, completed } = req.body;
-        if (!title) {
-            return res.status(400).json({
-                success: false,
-                message: "title is required",
-            });
-        }
+        
         const updatedTodo = await Todo.findByIdAndUpdate(
             id,
             { title, completed },
