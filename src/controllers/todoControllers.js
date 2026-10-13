@@ -4,7 +4,7 @@ const Todo = require("../models/Todo");
 const createTodo = async (req, res) => {
     try {
         const { title } = req.body;
-        const newTodo = new Todo({ title });
+        const newTodo = new Todo({ title, user: req.userId });
         const savedTodo = await newTodo.save();
 
         res.status(201).json({
@@ -23,7 +23,7 @@ const createTodo = async (req, res) => {
 
 const getTodos = async (req, res) => {
     try {
-        const todos = await Todo.find();
+        const todos = await Todo.find({ user: req.userId });
 
         res.status(200).json({
             data: todos,
@@ -48,7 +48,7 @@ const getTodoById = async (req, res) => {
             });
         }
 
-        const todo = await Todo.findById(id);
+        const todo = await Todo.findOne({ _id: id, user: req.userId });
 
         if (!todo) {
             return res.status(404).json({
@@ -82,10 +82,10 @@ const updateTodoById = async (req, res) => {
             });
         }
         const { title, completed } = req.body;
-        
-        const updatedTodo = await Todo.findByIdAndUpdate(
-            id,
-            { title, completed },
+
+        const updatedTodo = await Todo.findOneAndUpdate(
+            { _id: id, user: req.userId },
+            { completed },
             {
                 new: true,
                 runValidators: true,
@@ -120,7 +120,10 @@ const deleteTodoById = async (req, res) => {
                 message: "Invalid Id format",
             });
         }
-        const deletedTodo = await Todo.findByIdAndDelete(id);
+        const deletedTodo = await Todo.findOneAndDelete({
+            _id: id,
+            user: req.userId,
+        });
         if (!deletedTodo) {
             return res.status(404).json({
                 success: false,
@@ -129,7 +132,7 @@ const deleteTodoById = async (req, res) => {
         }
         res.status(200).json({
             success: true,
-            message: "Todo Deleted Successfully"
+            message: "Todo Deleted Successfully",
         });
     } catch (error) {
         res.status(500).json({
@@ -144,5 +147,5 @@ module.exports = {
     getTodos,
     getTodoById,
     updateTodoById,
-    deleteTodoById
+    deleteTodoById,
 };
