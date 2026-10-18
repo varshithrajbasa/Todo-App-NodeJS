@@ -1,5 +1,9 @@
-
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "express"
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/app.js"
+    }
+  ]
 }
