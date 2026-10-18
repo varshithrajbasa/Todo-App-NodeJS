@@ -16,13 +16,23 @@ app.use(async (req, res, next) => {
     }
 });
 
-app.get('/api/health', (req, res) => {
-    res.status(200).json({
-    message: "Todo API is running successfully!"
-  });
+app.get(['/api/health', '/health'], (req, res) => {
+    res.status(200).json({ message: "Todo API is running successfully!" });
 });
 
 app.use('/api/todos', todoRoutes);
+app.use('/todos', todoRoutes);
+
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
+
+app.use((req, res) => {
+    res.status(404).json({
+        error: "Route not found inside Express code",
+        requestedUrl: req.url,
+        originalUrl: req.originalUrl
+    });
+});
 
 module.exports = app;
